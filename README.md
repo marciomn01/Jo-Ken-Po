@@ -1,4 +1,4 @@
-# 🪨📄✂️🦎🖖 Jo Ken Po - The Big Bang Theory Edition - 🪨📄✂️🦎🖖
+# 🪨📄✂️🦎🖖 **Jo Ken Po - The Big Bang Theory Edition**
 
 ### by Márcio Melchiades Nascimento
 
