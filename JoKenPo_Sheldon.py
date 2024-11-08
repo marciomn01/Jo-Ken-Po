@@ -1,4 +1,4 @@
-""" Jo Ken Po  - The Big Bang Theory - for_code [ ] -  Márcio Melchiades Nascimento """
+""" Trilha de Python  - for_code [ ] - Semana Dois -  Márcio Melchiades Nascimento """
 
 # Questão 1: Fazer um pedra, papel, tesoura, lagarto e Spok, Utilizando Funções.
 
@@ -175,7 +175,15 @@ def TheBigBangJoKenPo():
                 print("Email: marciomelchiades.20221@poli.ufrj.br")
                 print("GitHub: mahttps://github.com/marciomn01")
                 print("LinkedIn: https://www.linkedin.com/in/marciomelchiadesnascimento/?originalSubdomain=br\n")
-                status = "menu"
+                
+                # Back to menu
+
+                print("Pressione Enter para voltar ao menu...")
+                
+                aux = input("")
+                
+                if aux == "":
+                    status = "menu"
 
             case "rules":
                 print("\nRegras do JoKenPo:")
@@ -190,7 +198,15 @@ def TheBigBangJoKenPo():
                 print("9 - Papel refuta Spok")
                 print("10 - Spok vaporiza Pedra")
                 print("11 - E como sempre foi Pedra esmaga Tesoura\n")
-                status = "menu"
+                
+                # Back to menu
+
+                print("Pressione Enter para voltar ao menu...")
+                
+                aux = input("")
+                
+                if aux == "":
+                    status = "menu"
             
             case "exit":
                 print("\nObrigado por jogar o JoKenPo! Até a próxima!\n")
