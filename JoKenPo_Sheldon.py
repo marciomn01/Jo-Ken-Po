@@ -2,217 +2,191 @@
 
 # Questão 1: Fazer um pedra, papel, tesoura, lagarto e Spok, Utilizando Funções.
 
-# Importação da biblioteca random, sys e time
+import os
+import random
+import time
+import sys
 
-from random import choice
-from time import sleep
-from sys import exit
+# Regras do jogo em um dicionário
+REGRAS = {
+    "Tesoura": ["Papel", "Lagarto"],
+    "Papel": ["Pedra", "Spok"],
+    "Pedra": ["Tesoura", "Lagarto"],
+    "Lagarto": ["Spok", "Papel"],
+    "Spok": ["Tesoura", "Pedra"]
+}
 
-# Definição da função
+OPCOES = list(REGRAS.keys())
 
+# Falas icônicas
+FALAS = {
+    ("Tesoura", "Papel"): "Tesoura corta Papel!",
+    ("Papel", "Pedra"): "Papel cobre Pedra!",
+    ("Pedra", "Lagarto"): "Pedra esmaga Lagarto!",
+    ("Lagarto", "Spok"): "Lagarto envenena Spok!",
+    ("Spok", "Tesoura"): "Spok amassa Tesoura!",
+    ("Tesoura", "Lagarto"): "Tesoura degola Lagarto!",
+    ("Lagarto", "Papel"): "Lagarto come Papel!",
+    ("Papel", "Spok"): "Papel refuta Spok!",
+    ("Spok", "Pedra"): "Spok vaporiza Pedra!",
+    ("Pedra", "Tesoura"): "E como sempre foi: Pedra esmaga Tesoura!"
+}
 
-def menu() -> str:
+def limpar_tela():
+    """Limpa o terminal para exibir apenas o necessário."""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+# Função do menu principal
+def menu():
     """
-    Função que exibe o menu de opções do jogo.
-
-    params:: str
-
-    return:: str
+    Exibe o menu principal e retorna o estado do jogo.
     """
-    
-    game_state = "menu"
-
-    # Definição do estado do jogo
-    print("\nBem-vindo ao JoKenPo!")
-
-    print("\n1 - Jogar")
+    limpar_tela()
+    print("\n=== Bem-vindo ao The Big Bang JoKenPo! ===\n")
+    print("1 - Jogar")
     print("2 - Créditos")
     print("3 - Regras")
-    print("4 - Sair do JoKenPo\n")
-            
-    resposta = input("Escolha uma opção: ")
-            
-    if  resposta == "1":
-        game_state = "play"
-            
-    elif resposta == "2":
-        game_state = "credits"
-            
-    elif resposta == "3":
-        game_state = "rules"
-            
-    elif resposta == "4":
-        game_state = "exit"
-
-    return game_state
-
-
-
-def TheBigBangJoKenPo():
-    """
-    Função que executa o jogo JoKenPo com as regras de Pedra, Papel, Tesoura, Lagarto e Spok.
-
-    params:: None   
-
-    return:: None
-    """
+    print("4 - Sair\n")
     
-    # Definição das opções possíveis
+    escolha = input("Escolha uma opção: ")
+    
+    if escolha == "1":
+        return "play"
+    elif escolha == "2":
+        return "credits"
+    elif escolha == "3":
+        return "rules"
+    elif escolha == "4":
+        print("\nObrigado por jogar! Até a próxima!")
+        sys.exit()
+    else:
+        print("\nOpção inválida. Tente novamente.")
+        time.sleep(1)
+        return "menu"
 
-    escolhas = ["Pedra", "Papel", "Tesoura", "Lagarto", "Spok"]
+# Função para determinar o vencedor
+def determinar_vencedor(jogador, npc):
+    """
+    Determina o vencedor com base nas regras.
+    """
+    if npc in REGRAS[jogador]:
+        return "jogador"
+    elif jogador in REGRAS[npc]:
+        return "npc"
+    else:
+        return "empate"
 
-    # Definição da quantidade de rodadas
-
-    win_player = 0
-    win_npc = 0
-    empate = 0
-
-    status = menu()
-
-    # Loop para verficar Status do Jogo
+# Função principal do jogo
+def jogar():
+    """
+    Executa o loop principal do jogo.
+    """
+    limpar_tela()
+    print("\nQue comece a batalha épica de Pedra, Papel, Tesoura, Lagarto e Spok!\n")
+    
+    vitorias_jogador = 0
+    vitorias_npc = 0
+    empates = 0
+    
     while True:
+        # Limpar a tela para cada rodada
+        limpar_tela()
+        print(f"\nPlacar: Jogador {vitorias_jogador} x {vitorias_npc} NPC | Empates: {empates}\n")
+        
+        # Jogador escolhe
+        print("Escolha sua jogada:")
+        for i, opcao in enumerate(OPCOES, start=1):
+            print(f"{i} - {opcao}")
+        
+        while True:
+            try:
+                escolha_jogador = OPCOES[int(input("\nDigite o número da sua escolha: ")) - 1]
+                break
+            except (ValueError, IndexError):
+                print("\nEscolha inválida. Tente novamente.")
 
-        match status:
-            case "play":
-                
-                # Loop para o jogo Rodar
-                while True:
-                    
-                    # Escolha do jogador e do NPC
+        # NPC escolhe
+        escolha_npc = random.choice(OPCOES)
+        print("\nJO...")
+        time.sleep(0.5)
+        print("KEN...")
+        time.sleep(0.5)
+        print("PO!\n")
+        time.sleep(0.5)
 
-                    player_choice = input("\nEscolha entre pedra, papel, tesoura, lagarto e Spok: ")
-                    player_choice = player_choice.capitalize()
-                    npc_choice = choice(escolhas)
-                    
-                    print() # Pular linha
-                    
-                    # Mensagem de JO KEN PO
-                    sleep(0.5)
-                    for i in escolhas:
-                        sleep(0.3)
-                        print(i)
-                    sleep(0.5)
-                    
-                    # Mensagem de escolha
-                    print(f"\nJogador: {player_choice} ")
-                    print(f"NPC: {npc_choice}\n")
+        # Mostrar escolhas
+        print(f"Jogador escolheu: {escolha_jogador}")
+        print(f"NPC escolheu: {escolha_npc}\n")
 
-                    # Condições de Empate
+        # Determinar o vencedor
+        resultado = determinar_vencedor(escolha_jogador, escolha_npc)
+        
+        if resultado == "jogador":
+            mensagem_vitoria = FALAS.get((escolha_jogador, escolha_npc), "Você venceu!")
+            print(f"{mensagem_vitoria}\n")
+            vitorias_jogador += 1
+        elif resultado == "npc":
+            mensagem_derrota = FALAS.get((escolha_npc, escolha_jogador), "Você perdeu!")
+            print(f"{mensagem_derrota} O NPC venceu essa!\n")
+            vitorias_npc += 1
+        else:
+            print("Empate! Que confronto acirrado!\n")
+            empates += 1
 
-                    if player_choice == npc_choice:
-                        print("Empate, parece que nos conhecemos bem!")
-                        empate += 1
-                        if empate == 2:
-                            print("Bazinga! Empate duplo, vamos recomeçar!")
-                            empate += 1
-                        elif empate >= 3:
-                            print("Por favor, escolha uma opção diferente! AAAAH!")
-                            empate = 0
+        # Perguntar se o jogador está pronto para a próxima rodada
+        input("Pressione Enter para continuar para a próxima rodada...")
 
-                    # Condições de Vitória
+        # Verificar se alguém venceu a melhor de 5
+        if vitorias_jogador == 3:
+            print("\nBazinga! Você é o grande campeão!\n")
+            break
+        elif vitorias_npc == 3:
+            print("\nDor! A máquina venceu...\n")
+            break
 
-                    elif player_choice == "Tesoura" and npc_choice == "Papel":
-                        print("Tesoura corta Papel!")
-                        win_player += 1
+    # Perguntar se deseja jogar novamente
+    jogar_novamente = input("\nDeseja jogar novamente? (S/N): ").strip().upper()
+    if jogar_novamente != "S":
+        print("\nVoltando ao menu principal...")
+        time.sleep(1)
 
-                    elif player_choice == "Papel" and npc_choice == "Pedra":
-                        print("Papel cobre Pedra!")
-                        win_player += 1
-                    
-                    elif player_choice == "Pedra" and npc_choice == "Lagarto":
-                        print("Pedra esmaga Lagarto!")
-                        win_player += 1
-                    
-                    elif player_choice == "Lagarto" and npc_choice == "Spok":
-                        print("Lagarto envenena Spok!")
-                        win_player += 1
-                    
-                    elif player_choice == "Spok" and npc_choice == "Tesoura":
-                        print("Spok amassa Tesoura!")
+# Função para exibir os créditos
+def creditos():
+    limpar_tela()
+    print("\n=== Créditos ===\n")
+    print("Criado por: Márcio Melchiades Nascimento")
+    print("Contato: marciomelchiades.20221@poli.ufrj.br")
+    print("GitHub: https://github.com/marciomn01")
+    print("LinkedIn: https://www.linkedin.com/in/marciomelchiadesnascimento/\n")
+    input("Pressione Enter para voltar ao menu...")
 
-                    elif player_choice == "Tesoura" and npc_choice == "Lagarto":
-                        print("Tesoura degola Lagarto!")
-                        win_player += 1
+# Função para exibir as regras
+def regras():
+    limpar_tela()
+    print("\n=== Regras ===\n")
+    for vencedor, derrotados in REGRAS.items():
+        for derrotado in derrotados:
+            print(f"{vencedor} vence {derrotado}.")
+    print()
+    input("Pressione Enter para voltar ao menu...")
 
-                    elif player_choice == "Lagarto" and npc_choice == "Papel":
-                        print("Lagarto come Papel!")
-                        win_player += 1
+# Função principal
+def main():
+    estado = "menu"
+    
+    while True:
+        if estado == "menu":
+            estado = menu()
+        elif estado == "play":
+            jogar()
+            estado = "menu"
+        elif estado == "credits":
+            creditos()
+            estado = "menu"
+        elif estado == "rules":
+            regras()
+            estado = "menu"
 
-                    elif player_choice == "Papel" and npc_choice == "Spok":
-                        print("Papel refuta Spok!")
-                        win_player += 1
-
-                    elif player_choice == "Spok" and npc_choice == "Pedra":
-                        print("Spok vaporiza Pedra!")
-                        win_player += 1
-
-                    elif player_choice == "Pedra" and npc_choice == "Tesoura":
-                        print("E como sempre foi Pedra esmaga Tesoura!")
-                        win_player += 1
-
-                    # Condições de Derrota
-
-                    else:
-                        print("Oooohh, Você perdeu, tente novamente!")
-                        win_npc += 1
-
-                    # Mensagem de Vitória
-
-                    if win_player == 3:
-                        print("\nBazinga Sheldon é o novo campeão!")
-                        print(f"\nPlacar: Jogador {win_player} x {win_npc} NPC\n")
-                        status = menu()
-                        break
-                    elif win_npc == 3:
-                        print("\nDor, perdemos para a máquina!")
-                        print(f"\nPlacar: Jogador {win_player} x {win_npc} NPC\n")
-                        status = menu()
-                        break
-
-
-            case "credits":
-                print("\nDesenvolvido por: Márcio Melchiades Nascimento")
-                print("Email: marciomelchiades.20221@poli.ufrj.br")
-                print("GitHub: mahttps://github.com/marciomn01")
-                print("LinkedIn: https://www.linkedin.com/in/marciomelchiadesnascimento/?originalSubdomain=br\n")
-                
-                # Back to menu
-
-                print("Pressione Enter para voltar ao menu...")
-                
-                aux = input("")
-                
-                if aux == "":
-                    status = "menu"
-
-            case "rules":
-                print("\nRegras do JoKenPo:")
-                print("\n1 - Pedra esmaga Tesoura")
-                print("2 - Tesoura corta Papel")
-                print("3 - Papel cobre Pedra")
-                print("4 - Pedra esmaga Lagarto")
-                print("5 - Lagarto envenena Spok")
-                print("6 - Spok amassa Tesoura")
-                print("7 - Tesoura degola Lagarto")
-                print("8 - Lagarto come Papel")
-                print("9 - Papel refuta Spok")
-                print("10 - Spok vaporiza Pedra")
-                print("11 - E como sempre foi Pedra esmaga Tesoura\n")
-                
-                # Back to menu
-
-                print("Pressione Enter para voltar ao menu...")
-                
-                aux = input("")
-                
-                if aux == "":
-                    status = "menu"
-            
-            case "exit":
-                print("\nObrigado por jogar o JoKenPo! Até a próxima!\n")
-                exit()
-
-            case "menu":
-                status = menu()
-
-TheBigBangJoKenPo()
+# Executar o jogo
+if __name__ == "__main__":
+    main()
